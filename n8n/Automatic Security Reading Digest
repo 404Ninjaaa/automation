@@ -1,0 +1,258 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/45 * * * *"
+            }
+          ]
+        }
+      },
+      "id": "8a211ae7-4d43-4385-9421-98c152438833",
+      "name": "Every 45 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [224, 704]
+    },
+    {
+      "parameters": {
+        "url": "https://portswigger.net/research/rss",
+        "options": {}
+      },
+      "id": "b8c2f74f-b8ef-4da9-b3be-8c313a3b8e0d",
+      "name": "PortSwigger Research",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [592, 352]
+    },
+    {
+      "parameters": {
+        "url": "https://infosecwriteups.com/feed",
+        "options": {}
+      },
+      "id": "398a2829-58aa-44a9-8cdc-dacc492b2ffe",
+      "name": "InfoSec Writeups",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [592, 496]
+    },
+    {
+      "parameters": {
+        "url": "https://medium.com/feed/tag/bug-bounty",
+        "options": {}
+      },
+      "id": "54470b5c-2e9a-446d-b21b-86e188c21059",
+      "name": "Medium Bug Bounty Tag",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [592, 656]
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/netsec/.rss",
+        "options": {}
+      },
+      "id": "7cc2454a-4b62-496c-a425-fc42492240be",
+      "name": "r/netsec",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [592, 800]
+    },
+    {
+      "parameters": {},
+      "id": "ddbbabe6-85fe-4d5b-95ad-d130235f68e2",
+      "name": "Merge A",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [832, 448]
+    },
+    {
+      "parameters": {},
+      "id": "76d12586-5a0f-4fe7-8a70-5bff73aa9be9",
+      "name": "Merge B",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1072, 512]
+    },
+    {
+      "parameters": {},
+      "id": "5fafea56-2d0a-4cc4-b780-ba626f8de745",
+      "name": "Merge C",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1312, 576]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "YOUR_GOOGLE_DOC_URL_HERE"
+      },
+      "id": "02a97c26-3f4f-42b4-85b1-7b7fd3da2e62",
+      "name": "Read Seen Links From Google Doc",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [592, 944],
+      "notesInFlow": true,
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Docs account"
+        }
+      },
+      "notes": "Select your Google Docs OAuth2 credential and paste the Google Doc URL or document ID."
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = String($json.content || '');\n\nconst urls = text.match(/https?:\\/\\/[^\\s<>\"'\\]\\[{}()]+/g) || [];\n\nconst seenLinks = [...new Set(\n  urls.map(url => url.replace(/[.,;:!?]+$/, '').trim()).filter(Boolean)\n)];\n\nreturn [{\n  json: {\n    __type: 'seenLinksData',\n    seenLinks,\n  },\n}];"
+      },
+      "id": "c584a47b-de82-4841-a570-aefc753da329",
+      "name": "Parse Google Doc Links",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [832, 944]
+    },
+    {
+      "parameters": {},
+      "id": "0534ecae-7bc4-45f7-9d2e-1b9901056af2",
+      "name": "Merge Combine",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1600, 704]
+    },
+    {
+      "parameters": {
+        "jsCode": "let seenLinks = [];\nconst rssItems = [];\n\nfor (const item of items) {\n  if (item.json.__type === 'seenLinksData') {\n    seenLinks = Array.isArray(item.json.seenLinks)\n      ? item.json.seenLinks\n      : [];\n  } else {\n    rssItems.push(item);\n  }\n}\n\nconst seenSet = new Set(\n  seenLinks.map(link => String(link).trim()).filter(Boolean)\n);\n\nconst newItems = [];\n\nfor (const item of rssItems) {\n  const link = String(item.json.link || item.json.guid || '').trim();\n\n  if (!link || seenSet.has(link)) continue;\n\n  seenSet.add(link);\n\n  newItems.push({\n    link,\n    title: item.json.title || 'Untitled',\n    pubDate: item.json.pubDate || item.json.isoDate || '',\n  });\n}\n\nnewItems.sort((a, b) => {\n  const dateA = new Date(a.pubDate || 0).getTime();\n  const dateB = new Date(b.pubDate || 0).getTime();\n  return dateB - dateA;\n});\n\n// Stop the workflow here when there are no new links.\nif (newItems.length === 0) {\n  return [];\n}\n\nconst savedAt = new Date().toISOString();\n\nconst appendText = `\\n\\n--- Security Digest ${savedAt} ---\\n` +\n  newItems.map((item, index) =>\n    `${index + 1}. ${item.title}\\n${item.link}\\n${item.pubDate || ''}`\n  ).join('\\n\\n') +\n  '\\n';\n\nreturn [{\n  json: {\n    newItems,\n    appendText,\n  },\n}];"
+      },
+      "id": "5235ad54-6e57-48da-beb0-533e3f37a123",
+      "name": "Filter & Prepare",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1840, 704]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "YOUR_GOOGLE_DOC_URL_HERE",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.appendText }}"
+            }
+          ]
+        }
+      },
+      "id": "292b80e0-dfd6-4105-98dc-e608da25ad7a",
+      "name": "Save New Links To Google Doc",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [2080, 704],
+      "notesInFlow": true,
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Docs account"
+        }
+      },
+      "notes": "Select the same Google Docs OAuth2 credential and use the same Google Doc URL or document ID."
+    },
+    {
+      "parameters": {
+        "jsCode": "const newItems = $('Filter & Prepare').first().json.newItems || [];\n\nif (newItems.length === 0) {\n  return [];\n}\n\nconst header = `📚 Security Reading Digest — ${new Date().toDateString()}\\n${newItems.length} new post(s)\\n\\n`;\n\nconst entries = newItems.map((item, index) => {\n  const title = item.title || 'Untitled';\n  const link = item.link || '';\n  return `${index + 1}. ${title}\\n${link}\\n\\n`;\n});\n\nconst maxLength = 1900;\nconst chunks = [];\nlet current = header;\n\nfor (const entry of entries) {\n  if ((current + entry).length > maxLength) {\n    if (current.trim()) chunks.push(current);\n    current = entry;\n  } else {\n    current += entry;\n  }\n}\n\nif (current.trim()) chunks.push(current);\n\nreturn chunks.map((message, index) => ({\n  json: {\n    message: chunks.length > 1\n      ? `${message}(part ${index + 1}/${chunks.length})`\n      : message,\n  },\n}));"
+      },
+      "id": "5c172a91-3b56-4184-9e77-d0ae57fe8b6b",
+      "name": "Format Digest",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2320, 704]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "YOUR_DISCORD_SERVER_ID",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "YOUR_DISCORD_CHANNEL_URL",
+          "mode": "url"
+        },
+        "content": "={{ $json.message.slice(0, 1990) }}",
+        "options": {}
+      },
+      "id": "6e73961b-0e41-417e-9271-c919f26eab8c",
+      "name": "Send to Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [2560, 704],
+      "credentials": {
+        "discordBotApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Discord Bot account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Daily 8AM": {
+      "main": [
+        [
+          { "node": "PortSwigger Research", "type": "main", "index": 0 },
+          { "node": "InfoSec Writeups", "type": "main", "index": 0 },
+          { "node": "Medium Bug Bounty Tag", "type": "main", "index": 0 },
+          { "node": "r/netsec", "type": "main", "index": 0 },
+          { "node": "Read Seen Links From Google Doc", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "PortSwigger Research": {
+      "main": [[{ "node": "Merge A", "type": "main", "index": 0 }]]
+    },
+    "InfoSec Writeups": {
+      "main": [[{ "node": "Merge A", "type": "main", "index": 1 }]]
+    },
+    "Medium Bug Bounty Tag": {
+      "main": [[{ "node": "Merge B", "type": "main", "index": 1 }]]
+    },
+    "r/netsec": {
+      "main": [[{ "node": "Merge C", "type": "main", "index": 1 }]]
+    },
+    "Merge A": {
+      "main": [[{ "node": "Merge B", "type": "main", "index": 0 }]]
+    },
+    "Merge B": {
+      "main": [[{ "node": "Merge C", "type": "main", "index": 0 }]]
+    },
+    "Merge C": {
+      "main": [[{ "node": "Merge Combine", "type": "main", "index": 0 }]]
+    },
+    "Read Seen Links From Google Doc": {
+      "main": [[{ "node": "Parse Google Doc Links", "type": "main", "index": 0 }]]
+    },
+    "Parse Google Doc Links": {
+      "main": [[{ "node": "Merge Combine", "type": "main", "index": 1 }]]
+    },
+    "Merge Combine": {
+      "main": [[{ "node": "Filter & Prepare", "type": "main", "index": 0 }]]
+    },
+    "Filter & Prepare": {
+      "main": [[{ "node": "Save New Links To Google Doc", "type": "main", "index": 0 }]]
+    },
+    "Save New Links To Google Doc": {
+      "main": [[{ "node": "Format Digest", "type": "main", "index": 0 }]]
+    },
+    "Format Digest": {
+      "main": [[{ "node": "Send to Discord", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "REPLACE_WITH_YOUR_OWN_INSTANCE_ID"
+  }
+}
