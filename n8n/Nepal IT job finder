@@ -1,0 +1,454 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "query-merojob",
+              "name": "query",
+              "value": "site:merojob.com (\"IT & Telecommunication\" OR \"IT\" OR \"Information Technology\" OR \"IT Support\" OR \"Technical Support\" OR \"Help Desk\" OR \"Computer Operator\" OR \"Computer Technician\" OR \"IT Technician\" OR \"Cyber Security\" OR Cybersecurity OR SOC OR \"Information Security\" OR \"Network Engineer\" OR \"Network Administrator\" OR CCNA OR \"Software Developer\" OR \"Web Developer\" OR \"Full Stack Developer\" OR \"Frontend Developer\" OR \"Backend Developer\" OR Programmer OR \"Data Entry\" OR \"Data Entry Operator\" OR \"Data Processing\" OR MIS OR \"MIS Assistant\" OR \"Data Analyst\" OR \"IT Assistant\" OR \"Computer Assistant\") (\"Entry Level\" OR Internship OR Intern OR Trainee OR Fresher OR \"Fresh Graduate\" OR \"No Experience\" OR \"Experience: Not Required\") Kathmandu",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c8613401-2485-476a-af42-df02d7228ad6",
+      "name": "Merojob Query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [6992, 10704]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "query-jobsnepal",
+              "name": "query",
+              "value": "site:jobsnepal.com (\"IT & Telecommunication\" OR \"IT\" OR \"Information Technology\" OR \"IT Support\" OR \"Technical Support\" OR \"Help Desk\" OR \"Computer Operator\" OR \"Computer Technician\" OR \"IT Technician\" OR \"Cyber Security\" OR Cybersecurity OR SOC OR \"Information Security\" OR \"Network Engineer\" OR \"Network Administrator\" OR CCNA OR \"Software Developer\" OR \"Web Developer\" OR \"Full Stack Developer\" OR \"Frontend Developer\" OR \"Backend Developer\" OR Programmer OR \"Data Entry\" OR \"Data Entry Operator\" OR \"Data Processing\" OR MIS OR \"MIS Assistant\" OR \"Data Analyst\" OR \"IT Assistant\" OR \"Computer Assistant\") (\"Entry Level\" OR Internship OR Intern OR Trainee OR Fresher OR \"Fresh Graduate\" OR \"No Experience\" OR \"Experience: Not Required\") Kathmandu",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a259dbec-9534-4ccc-873b-be2788b12e7b",
+      "name": "JobsNepal Query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [6992, 10912]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "query-kumarijob",
+              "name": "query",
+              "value": "site:kumarijob.com (\"IT & Telecommunication\" OR \"IT\" OR \"Information Technology\" OR \"IT Support\" OR \"Technical Support\" OR \"Help Desk\" OR \"Computer Operator\" OR \"Computer Technician\" OR \"IT Technician\" OR \"Cyber Security\" OR Cybersecurity OR SOC OR \"Information Security\" OR \"Network Engineer\" OR \"Network Administrator\" OR CCNA OR \"Software Developer\" OR \"Web Developer\" OR \"Full Stack Developer\" OR \"Frontend Developer\" OR \"Backend Developer\" OR Programmer OR \"Data Entry\" OR \"Data Entry Operator\" OR \"Data Processing\" OR MIS OR \"MIS Assistant\" OR \"Data Analyst\" OR \"IT Assistant\" OR \"Computer Assistant\") (\"Entry Level\" OR Internship OR Intern OR Trainee OR Fresher OR \"Fresh Graduate\" OR \"No Experience\" OR \"Experience: Not Required\") Kathmandu",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "77e3fd6c-4731-4a37-9c79-dc6b97c1c8af",
+      "name": "KumariJob Query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [6992, 11104]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "query-froxjob",
+              "name": "query",
+              "value": "site:froxjob.com (\"IT & Telecommunication\" OR \"IT\" OR \"Information Technology\" OR \"IT Support\" OR \"Technical Support\" OR \"Help Desk\" OR \"Computer Operator\" OR \"Computer Technician\" OR \"IT Technician\" OR \"Cyber Security\" OR Cybersecurity OR SOC OR \"Information Security\" OR \"Network Engineer\" OR \"Network Administrator\" OR CCNA OR \"Software Developer\" OR \"Web Developer\" OR \"Full Stack Developer\" OR \"Frontend Developer\" OR \"Backend Developer\" OR Programmer OR \"Data Entry\" OR \"Data Entry Operator\" OR \"Data Processing\" OR MIS OR \"MIS Assistant\" OR \"Data Analyst\" OR \"IT Assistant\" OR \"Computer Assistant\") (\"Entry Level\" OR Internship OR Intern OR Trainee OR Fresher OR \"Fresh Graduate\" OR \"No Experience\" OR \"Experience: Not Required\") Kathmandu",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ed711dd4-cae1-4738-9d39-f3e0f299866d",
+      "name": "FroxJob Query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [6992, 11312]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "query-sathijob",
+              "name": "query",
+              "value": "site:sathijob.com (\"IT & Telecommunication\" OR \"IT\" OR \"Information Technology\" OR \"IT Support\" OR \"Technical Support\" OR \"Help Desk\" OR \"Computer Operator\" OR \"Computer Technician\" OR \"IT Technician\" OR \"Cyber Security\" OR Cybersecurity OR SOC OR \"Information Security\" OR \"Network Engineer\" OR \"Network Administrator\" OR CCNA OR \"Software Developer\" OR \"Web Developer\" OR \"Full Stack Developer\" OR \"Frontend Developer\" OR \"Backend Developer\" OR Programmer OR \"Data Entry\" OR \"Data Entry Operator\" OR \"Data Processing\" OR MIS OR \"MIS Assistant\" OR \"Data Analyst\" OR \"IT Assistant\" OR \"Computer Assistant\") (\"Entry Level\" OR Internship OR Intern OR Trainee OR Fresher OR \"Fresh Graduate\" OR \"No Experience\" OR \"Experience: Not Required\") Kathmandu",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7b485af1-befb-490f-a019-fd104ede3230",
+      "name": "SathiJob Query",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [6992, 11504]
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "engine", "value": "google" },
+            { "name": "q", "value": "={{ $json.query }}" },
+            { "name": "google_domain", "value": "google.com" },
+            { "name": "gl", "value": "np" },
+            { "name": "api_key", "value": "YOUR_SERPAPI_KEY" },
+            { "name": "tbs", "value": "qdr:d" },
+            { "name": "num", "value": "100" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "129bcba7-74a1-4111-aa0a-8994c86c1198",
+      "name": "Search Merojob",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [7280, 10704]
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "engine", "value": "google" },
+            { "name": "q", "value": "={{ $json.query }}" },
+            { "name": "google_domain", "value": "google.com" },
+            { "name": "gl", "value": "np" },
+            { "name": "api_key", "value": "YOUR_SERPAPI_KEY" },
+            { "name": "tbs", "value": "qdr:d" },
+            { "name": "num", "value": "100" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c15f8c84-2c91-4af2-af53-7466652d64f3",
+      "name": "Search JobsNepal",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [7280, 10912]
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "engine", "value": "google" },
+            { "name": "q", "value": "={{ $json.query }}" },
+            { "name": "google_domain", "value": "google.com" },
+            { "name": "gl", "value": "np" },
+            { "name": "api_key", "value": "YOUR_SERPAPI_KEY" },
+            { "name": "tbs", "value": "qdr:d" },
+            { "name": "num", "value": "100" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3f99bfa3-546f-4e42-ab5c-72996b757072",
+      "name": "Search KumariJob",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [7280, 11104]
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "engine", "value": "google" },
+            { "name": "q", "value": "={{ $json.query }}" },
+            { "name": "google_domain", "value": "google.com" },
+            { "name": "gl", "value": "np" },
+            { "name": "api_key", "value": "YOUR_SERPAPI_KEY" },
+            { "name": "tbs", "value": "qdr:d" },
+            { "name": "num", "value": "100" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "08bf6bdd-605d-4d6c-ab5a-070644d98d7c",
+      "name": "Search FroxJob",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [7280, 11312]
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "engine", "value": "google" },
+            { "name": "q", "value": "={{ $json.query }}" },
+            { "name": "google_domain", "value": "google.com" },
+            { "name": "gl", "value": "np" },
+            { "name": "api_key", "value": "YOUR_SERPAPI_KEY" },
+            { "name": "tbs", "value": "qdr:d" },
+            { "name": "num", "value": "100" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2b414e5f-dd77-4891-9615-1e3aab53f77f",
+      "name": "Search SathiJob",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [7280, 11504]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = [];\n\nfor (const item of $input.all()) {\n  const results = Array.isArray(item.json.organic_results)\n    ? item.json.organic_results\n    : [];\n\n  for (const r of results) {\n    if (!r.link) continue;\n\n    const url = String(r.link).toLowerCase();\n\n    let source = 'Unknown';\n\n    if (url.includes('merojob.com')) source = 'Merojob';\n    else if (url.includes('jobsnepal.com')) source = 'JobsNepal';\n    else if (url.includes('kumarijob.com')) source = 'KumariJob';\n    else if (url.includes('froxjob.com')) source = 'FroxJob';\n    else if (url.includes('sathijob.com')) source = 'SathiJob';\n    else continue;\n\n    output.push({\n      json: {\n        position: r.position || null,\n        title: r.title || '',\n        link: r.link || '',\n        snippet: r.snippet || '',\n        date: r.date || '',\n        displayed_link: r.displayed_link || '',\n        source\n      }\n    });\n  }\n}\n\nreturn output;"
+      },
+      "id": "2f253321-3d5a-45c9-8187-4c8dc454d0bb",
+      "name": "Extract All Job Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7600, 11104]
+    },
+    {
+      "parameters": {},
+      "id": "0592d6c1-6764-4dbe-86d4-593109ba5bc1",
+      "name": "Merge All Job Results",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [7840, 11104]
+    },
+    {
+      "parameters": {},
+      "id": "3f4890ce-8342-4073-a166-53926544ec4a",
+      "name": "Merge Jobs With Seen URLs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [8080, 10800]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nlet seenLinks = [];\nconst jobs = [];\n\nfor (const item of items) {\n  const data = item.json || {};\n\n  if (data.__type === 'seenLinksData') {\n    seenLinks.push(...(Array.isArray(data.seenLinks) ? data.seenLinks : []));\n    continue;\n  }\n\n  if (data.link) {\n    jobs.push(data);\n  }\n}\n\nfunction normalizeUrl(url) {\n  return String(url || '')\n    .trim()\n    .replace(/[?#].*$/, '')\n    .replace(/\\/+$/, '')\n    .toLowerCase();\n}\n\nconst seenSet = new Set(seenLinks.map(normalizeUrl));\nconst currentRunSet = new Set();\nconst newJobs = [];\n\nfor (const job of jobs) {\n  const normalizedUrl = normalizeUrl(job.link);\n\n  if (!normalizedUrl) continue;\n  if (seenSet.has(normalizedUrl)) continue;\n  if (currentRunSet.has(normalizedUrl)) continue;\n\n  currentRunSet.add(normalizedUrl);\n\n  newJobs.push({\n    json: {\n      ...job,\n      normalizedUrl,\n      isNew: true\n    }\n  });\n}\n\nreturn newJobs;"
+      },
+      "id": "05ed1d1b-1fa2-496d-8842-d87d82914f65",
+      "name": "Filter Only New Jobs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8320, 10800]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "YOUR_DISCORD_GUILD_ID",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "https://discord.com/channels/YOUR_DISCORD_GUILD_ID/YOUR_DISCORD_CHANNEL_ID",
+          "mode": "url"
+        },
+        "content": "={{ `🇳🇵 Nepal IT Job\\n\\n💼 ${$json.title || 'Unknown'}\\n🏢 ${$json.source || 'Unknown'}\\n📅 ${$json.date || 'Date not shown by Google'}\\n🔗 ${$json.link}\\n\\n${$json.snippet || ''}`.slice(0, 1900) }}",
+        "options": {}
+      },
+      "id": "38b2cb2f-9677-4c75-aedb-71dc079ff66d",
+      "name": "Send New Jobs to Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [8560, 10704],
+      "webhookId": "YOUR_WEBHOOK_ID",
+      "credentials": {
+        "discordBotApi": {
+          "id": "YOUR_DISCORD_CREDENTIAL_ID",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const jobs = $input.all();\n\nif (!jobs.length) {\n  return [];\n}\n\nconst lines = jobs.map((item, index) => {\n  const j = item.json || {};\n\n  return [\n    `--- JOB ${index + 1} ---`,\n    `Title: ${j.title || 'Unknown'}`,\n    `URL: ${j.link || ''}`,\n    `Source: ${j.source || 'Unknown'}`,\n    `Posted: ${j.date || 'Date not shown by Google'}`,\n    `Country: Nepal`,\n    `Description: ${j.snippet || ''}`,\n    `Saved: ${new Date().toISOString()}`\n  ].join('\\n');\n});\n\nreturn [\n  {\n    json: {\n      appendText: '\\n\\n' + lines.join('\\n\\n')\n    }\n  }\n];"
+      },
+      "id": "1c695df7-16aa-42c4-b223-b0633b93524a",
+      "name": "Build Google Doc Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [8560, 10912]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/YOUR_GOOGLE_DOC_ID/edit?tab=t.0",
+        "actionsUi": {
+          "actionFields": [
+            { "action": "insert", "text": "={{ $json.appendText }}" }
+          ]
+        }
+      },
+      "id": "08965be7-70de-42d9-b3ad-44ac1fa00447",
+      "name": "Save New Jobs to Google Doc",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [8800, 10912],
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOUR_GOOGLE_DOCS_CREDENTIAL_ID",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/YOUR_GOOGLE_DOC_ID/edit?tab=t.0"
+      },
+      "id": "ffc6b472-9c36-4907-bfbd-62af96a2ceb8",
+      "name": "Read Seen Jobs From Google Doc",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [6992, 10400],
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOUR_GOOGLE_DOCS_CREDENTIAL_ID",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "0 */3 * * *" }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [6672, 10928],
+      "id": "175bb1cb-2dbd-4677-b83c-dd32955c546c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = String($json.content || '');\n\nconst urls = text.match(/https?:\\/\\/[^\\s<>\"'\\]\\[{}()]+/g) || [];\n\nfunction normalizeUrl(url) {\n  return String(url || '')\n    .trim()\n    .replace(/[.,;:!?]+$/, '')\n    .replace(/[?#].*$/, '')\n    .replace(/\\/+$/, '')\n    .toLowerCase();\n}\n\nconst seenLinks = [...new Set(\n  urls\n    .map(normalizeUrl)\n    .filter(url => url && /https?:\\/\\/(www\\.)?(merojob|jobsnepal|kumarijob|froxjob|sathijob)\\.com/.test(url))\n)];\n\nreturn [\n  {\n    json: {\n      __type: 'seenLinksData',\n      seenLinks,\n      seenCount: seenLinks.length\n    }\n  }\n];"
+      },
+      "id": "3b390e22-e7b3-45bc-8300-10f6893501ae",
+      "name": "Parse Seen Job Links",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [7232, 10400]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "job search n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Filter Only New Jobs').item.json.title }}",
+            "URL": "={{ $('Filter Only New Jobs').item.json.link }}",
+            "Source": "={{ $('Filter Only New Jobs').item.json.source }}",
+            "Description": "={{ $('Filter Only New Jobs').item.json.snippet }}",
+            "Date": "={{ $json.date }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "Title", "displayName": "Title", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
+            { "id": "URL", "displayName": "URL", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
+            { "id": "Source", "displayName": "Source", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
+            { "id": "Description", "displayName": "Description", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
+            { "id": "Date", "displayName": "Date", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": false },
+            { "id": "Status", "displayName": "Status", "required": false, "defaultMatch": false, "display": true, "type": "string", "canBeUsedToMatch": true, "removed": true }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [8560, 11088],
+      "id": "71a8920f-eb40-48a6-aeb4-51220bc88c5a",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Merojob Query": { "main": [[{ "node": "Search Merojob", "type": "main", "index": 0 }]] },
+    "JobsNepal Query": { "main": [[{ "node": "Search JobsNepal", "type": "main", "index": 0 }]] },
+    "KumariJob Query": { "main": [[{ "node": "Search KumariJob", "type": "main", "index": 0 }]] },
+    "FroxJob Query": { "main": [[{ "node": "Search FroxJob", "type": "main", "index": 0 }]] },
+    "SathiJob Query": { "main": [[{ "node": "Search SathiJob", "type": "main", "index": 0 }]] },
+    "Search Merojob": { "main": [[{ "node": "Extract All Job Results", "type": "main", "index": 0 }]] },
+    "Search JobsNepal": { "main": [[{ "node": "Extract All Job Results", "type": "main", "index": 0 }]] },
+    "Search KumariJob": { "main": [[{ "node": "Extract All Job Results", "type": "main", "index": 0 }]] },
+    "Search FroxJob": { "main": [[{ "node": "Extract All Job Results", "type": "main", "index": 0 }]] },
+    "Search SathiJob": { "main": [[{ "node": "Extract All Job Results", "type": "main", "index": 0 }]] },
+    "Extract All Job Results": { "main": [[{ "node": "Merge All Job Results", "type": "main", "index": 0 }]] },
+    "Merge All Job Results": { "main": [[{ "node": "Merge Jobs With Seen URLs", "type": "main", "index": 0 }]] },
+    "Merge Jobs With Seen URLs": { "main": [[{ "node": "Filter Only New Jobs", "type": "main", "index": 0 }]] },
+    "Filter Only New Jobs": {
+      "main": [
+        [
+          { "node": "Send New Jobs to Discord", "type": "main", "index": 0 },
+          { "node": "Build Google Doc Text", "type": "main", "index": 0 },
+          { "node": "Append row in sheet", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Build Google Doc Text": { "main": [[{ "node": "Save New Jobs to Google Doc", "type": "main", "index": 0 }]] },
+    "Save New Jobs to Google Doc": { "main": [[]] },
+    "Read Seen Jobs From Google Doc": { "main": [[{ "node": "Parse Seen Job Links", "type": "main", "index": 0 }]] },
+    "Schedule Trigger": {
+      "main": [
+        [
+          { "node": "Read Seen Jobs From Google Doc", "type": "main", "index": 0 },
+          { "node": "Merojob Query", "type": "main", "index": 0 },
+          { "node": "JobsNepal Query", "type": "main", "index": 0 },
+          { "node": "KumariJob Query", "type": "main", "index": 0 },
+          { "node": "FroxJob Query", "type": "main", "index": 0 },
+          { "node": "SathiJob Query", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Parse Seen Job Links": { "main": [[{ "node": "Merge Jobs With Seen URLs", "type": "main", "index": 1 }]] }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "YOUR_INSTANCE_ID"
+  }
+}
