@@ -1,0 +1,528 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "5bfcd770-01ab-486e-b22c-e2717b9b70c6",
+      "name": "When clicking Test workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        16,
+        2464
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Edit these two lists to control coverage.\n// areas x keywords = total number of Text Search calls.\nconst areas = [\n  \"Kathmandu, Nepal\",\n  \"Pokhara, Nepal\",\n  \"Chitwan, Nepal\",\n  \"Lalitpur, Nepal\",\n  \"Bhaktapur, Nepal\",\n  \"Lumbini, Nepal\",\n  \"Bandipur, Nepal\",\n  \"Nagarkot, Nepal\",\n  \"Dharan, Nepal\",\n  \"Butwal, Nepal\",\n  \"Biratnagar, Nepal\",\n  \"Ilam, Nepal\"\n];\n\nconst keywords = [\n  \"tour operator\",\n  \"trekking agency\",\n  \"travel agency\"\n];\n\nconst items = [];\nfor (const area of areas) {\n  for (const kw of keywords) {\n    items.push({ json: { query: `${kw} in ${area}` } });\n  }\n}\nreturn items;"
+      },
+      "id": "847666b7-752d-449a-92e1-5556bf9aa08e",
+      "name": "Generate Search Queries2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        2448
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://places.googleapis.com/v1/places:searchText",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Goog-Api-Key",
+              "value": "YOUR_GOOGLE_PLACES_API_KEY"
+            },
+            {
+              "name": "X-Goog-FieldMask",
+              "value": "places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.websiteUri,places.internationalPhoneNumber"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ textQuery: $json.query, maxResultCount: 20 }) }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "5906c1fc-1b2d-45ef-b25f-fc144b7c6c71",
+      "name": "Text Search2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        464,
+        2448
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "places",
+        "options": {}
+      },
+      "id": "54677223-4770-428d-b6df-93b84a093f8e",
+      "name": "Split Out Places2",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        672,
+        2448
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "place_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "name",
+              "value": "={{ $json.displayName?.text }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "address",
+              "value": "={{ $json.formattedAddress }}",
+              "type": "string"
+            },
+            {
+              "id": "a4",
+              "name": "rating",
+              "value": "={{ $json.rating }}",
+              "type": "string"
+            },
+            {
+              "id": "a5",
+              "name": "review_count",
+              "value": "={{ $json.userRatingCount }}",
+              "type": "string"
+            },
+            {
+              "id": "a6",
+              "name": "phone",
+              "value": "={{ $json.internationalPhoneNumber ? \"'\" + $json.internationalPhoneNumber : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "a7",
+              "name": "website",
+              "value": "={{ $json.websiteUri }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5c171b58-8397-4691-af3f-b06c604bb273",
+      "name": "Map Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        2448
+      ]
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "place_id",
+        "options": {}
+      },
+      "id": "f66672f5-703b-4388-b71b-1401964dd0c9",
+      "name": "Remove Duplicates2",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        1136,
+        2400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.website }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ab20cad9-f828-4307-bedf-8c9250ed217b",
+      "name": "Has Website2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        2448
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.website }}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 8000
+        }
+      },
+      "id": "79084fa5-6b1e-4a21-9d4f-849aab5e9c95",
+      "name": "Fetch Website2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1552,
+        2336
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const html = String($input.item.json.data || $input.item.json.body || '');\n\nconst emailMatches = html.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/g) || [];\nconst fbMatches = html.match(/https?:\\/\\/(www\\.)?facebook\\.com\\/[a-zA-Z0-9_.\\-\\/]+/g) || [];\nconst igMatches = html.match(/https?:\\/\\/(www\\.)?instagram\\.com\\/[a-zA-Z0-9_.\\-\\/]+/g) || [];\nconst waMatches = html.match(/https?:\\/\\/(wa\\.me|api\\.whatsapp\\.com)\\/[a-zA-Z0-9_.\\-\\/?=]+/g) || [];\nconst ytMatches = html.match(/https?:\\/\\/(www\\.)?youtube\\.com\\/[a-zA-Z0-9_.\\-\\/@]+/g) || [];\nconst ttMatches = html.match(/https?:\\/\\/(www\\.)?tiktok\\.com\\/[a-zA-Z0-9_.\\-\\/@]+/g) || [];\nconst twMatches = html.match(/https?:\\/\\/(www\\.)?(twitter|x)\\.com\\/[a-zA-Z0-9_.\\-\\/]+/g) || [];\nconst liMatches = html.match(/https?:\\/\\/(www\\.)?linkedin\\.com\\/[a-zA-Z0-9_.\\-\\/]+/g) || [];\n\nconst cleanEmail = emailMatches.find(e => !/\\.(png|jpg|jpeg|gif|svg|webp)$/i.test(e)) || '';\n\nconst additionalLinks = [\n  ...new Set([\n    ...igMatches,\n    ...waMatches,\n    ...ytMatches,\n    ...ttMatches,\n    ...twMatches,\n    ...liMatches\n  ])\n].join('\\n');\n\nconst source = $('Map Fields2').item.json;\n\nreturn {\n  json: {\n    ...source,\n    email: cleanEmail,\n    facebook: fbMatches[0] || '',\n    additional_links: additionalLinks\n  }\n};"
+      },
+      "id": "2f03a601-f9cc-47bb-bdb4-4a68fb302754",
+      "name": "Extract Email and FB2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1776,
+        2336
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b1",
+              "name": "email",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "b2",
+              "name": "facebook",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "b3",
+              "name": "additional_links",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6eba61a1-0c11-4954-86d0-87b439a6e666",
+      "name": "No Website Fallback2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1552,
+        2560
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_URL",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "place_id": "={{ $json.place_id }}",
+            "name": "={{ $json.name }}",
+            "address": "={{ $json.address }}",
+            "rating": "={{ $json.rating }}",
+            "review_count": "={{ $json.review_count }}",
+            "phone": "={{ $json.phone }}",
+            "website": "={{ $json.website }}",
+            "email": "={{ $json.email }}",
+            "facebook": "={{ $json.facebook }}",
+            "additional_links": "={{ $json.additional_links }}"
+          },
+          "matchingColumns": [
+            "place_id"
+          ],
+          "schema": [
+            {
+              "id": "place_id",
+              "displayName": "place_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "review_count",
+              "displayName": "review_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "website",
+              "displayName": "website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "facebook",
+              "displayName": "facebook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "additional_links",
+              "displayName": "additional_links",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "3f5c86c2-9009-4a7e-b7a4-0bee46f60dfd",
+      "name": "Write to Google Sheet3",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2000,
+        2448
+      ]
+    }
+  ],
+  "connections": {
+    "When clicking Test workflow": {
+      "main": [
+        [
+          {
+            "node": "Generate Search Queries2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Search Queries2": {
+      "main": [
+        [
+          {
+            "node": "Text Search2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Search2": {
+      "main": [
+        [
+          {
+            "node": "Split Out Places2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out Places2": {
+      "main": [
+        [
+          {
+            "node": "Map Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Fields2": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates2": {
+      "main": [
+        [
+          {
+            "node": "Has Website2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Website2": {
+      "main": [
+        [
+          {
+            "node": "Fetch Website2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Website Fallback2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Website2": {
+      "main": [
+        [
+          {
+            "node": "Extract Email and FB2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Email and FB2": {
+      "main": [
+        [
+          {
+            "node": "Write to Google Sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Website Fallback2": {
+      "main": [
+        [
+          {
+            "node": "Write to Google Sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
+}
