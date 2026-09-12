@@ -1,0 +1,654 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.data;\n\nconst programs = typeof raw === \"string\"\n  ? JSON.parse(raw)\n  : raw;\n\nreturn programs.map(p => ({\n  json: {\n    platform: \"Bugcrowd\",\n    name: p.name || p.code || \"Unknown\",\n    code: p.code || \"\",\n    url: p.url || \"\",\n    bounty: p.max_payout || 0\n  }\n}));"
+      },
+      "id": "596264c6-0e71-47fd-8681-f92b27cfc424",
+      "name": "Extract Bugcrowd Programs1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/master/data/hackerone_data.json",
+        "options": {}
+      },
+      "id": "403dedfa-a1f8-4077-9134-494b9ee90d2e",
+      "name": "hackerone_data2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        1584
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/master/data/bugcrowd_data.json",
+        "options": {}
+      },
+      "id": "eab6b731-a4f2-490c-8fc0-dd219855a33e",
+      "name": "bugcrowd_data2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        1408
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/master/data/intigriti_data.json",
+        "options": {}
+      },
+      "id": "09b27a12-5e4e-4e1d-ac21-b13188fcbc2d",
+      "name": "intigriti_data2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        1776
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/master/data/federacy_data.json",
+        "options": {}
+      },
+      "id": "35c25f23-f43c-4b6d-b335-5083486016d0",
+      "name": "federacy_data2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        1952
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.data;\n\nconst programs = typeof raw === \"string\"\n  ? JSON.parse(raw)\n  : raw;\n\nreturn programs.map(p => ({\n  json: {\n    platform: \"YesWeHack\",\n    name: p.name || p.code || \"Unknown\",\n    code: p.code || \"\",\n    url: p.url || \"\",\n    bounty: p.max_payout || 0\n  }\n}));"
+      },
+      "id": "66a7c6b8-95ad-4c6e-bdf5-5d1ef1aa8480",
+      "name": "Extract Bugcrowd Programs10",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        2144
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/arkadiyt/bounty-targets-data/master/data/yeswehack_data.json",
+        "options": {}
+      },
+      "id": "4aec0cc1-0a42-41a7-ba7a-af6a4f5045b1",
+      "name": "yeswehack_data2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        2144
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_GOOGLE_SHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "2ae5050f-976e-40a6-8d1c-690276baa2fc",
+      "name": "Read Seen Programs From Sheet3",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        288,
+        2320
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Each input item is a row from the Sheet: { key, platform, name, url, offersBounties, submissionState, firstSeen }\nconst seenKeys = items\n  .map(i => String(i.json.key || '').trim())\n  .filter(Boolean);\n\nreturn [{\n  json: {\n    __type: 'seenKeysData',\n    seenKeys,\n  },\n}];"
+      },
+      "id": "cb5216d8-56c2-47f9-9819-eb0e86c7d48c",
+      "name": "Extract Seen Keys4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        2320
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "dc0fb01f-a4bd-4fbd-9133-5f23c82895bb",
+      "name": "Merge A4",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        880,
+        1440
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "002ed865-1156-47a1-ba3f-8db680553e1f",
+      "name": "Merge B4",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1152,
+        1536
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "3f2deb62-6522-441b-a638-00cb04423e6e",
+      "name": "Merge C4",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1408,
+        1664
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "9f5e8683-1c9c-4042-9b28-5480b70c1731",
+      "name": "Merge D3",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1696,
+        1760
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "dc5fc2e0-11b0-451a-8b78-cf4eec6e5fe1",
+      "name": "Merge Combine4",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1984,
+        1888
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nlet seenKeys = new Set();\nlet programs = [];\n\nfor (const item of items) {\n  const data = item.json;\n\n  // Seen-program data from Google Sheets\n  if (data.__type === 'seenKeysData') {\n    if (Array.isArray(data.seenKeys)) {\n      seenKeys = new Set(\n        data.seenKeys\n          .map(k => String(k).trim())\n          .filter(Boolean)\n      );\n    }\n    continue;\n  }\n\n  // Program\n  if (data.platform && data.url) {\n    const platform = String(data.platform).trim();\n    const url = String(data.url).trim();\n\n    programs.push({\n      ...data,\n      platform,\n      url,\n      key: `${platform}:${url}`,\n    });\n  }\n}\n\n// Remove duplicates from source itself\nconst uniquePrograms = [];\nconst sourceKeys = new Set();\n\nfor (const program of programs) {\n  if (!sourceKeys.has(program.key)) {\n    sourceKeys.add(program.key);\n    uniquePrograms.push(program);\n  }\n}\n\n// Remove programs already in Google Sheets\nconst newItems = uniquePrograms.filter(\n  program => !seenKeys.has(program.key)\n);\n\nreturn [{\n  json: {\n    newItems,\n    count: newItems.length,\n    totalPrograms: uniquePrograms.length,\n    alreadySeen: uniquePrograms.length - newItems.length,\n  }\n}];"
+      },
+      "id": "c0e5751f-d990-4153-86e1-e09aaf293c02",
+      "name": "Filter & Prepare4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2288,
+        1792
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.data;\n\nconst programs = typeof raw === \"string\"\n  ? JSON.parse(raw)\n  : raw;\n\nreturn programs.map(p => ({\n  json: {\n    platform: \"HackerOne\",\n    name: p.name || p.code || \"Unknown\",\n    code: p.code || \"\",\n    url: p.url || \"\",\n    bounty: p.max_payout || 0\n  }\n}));"
+      },
+      "id": "15b2dbde-96e7-4e08-a08c-90fe0b4e3831",
+      "name": "Extract hackerone Programs1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        1584
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.data;\n\nconst programs = typeof raw === \"string\"\n  ? JSON.parse(raw)\n  : raw;\n\nreturn programs.map(p => ({\n  json: {\n    platform: \"Intigriti\",\n    name: p.name || p.code || \"Unknown\",\n    code: p.code || \"\",\n    url: p.url || \"\",\n    bounty: p.max_payout || 0\n  }\n}));"
+      },
+      "id": "55a04078-71d3-4565-bf1c-204622ddc1ab",
+      "name": "Extract intigrit Programs1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        1776
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.data;\n\nconst programs = typeof raw === \"string\"\n  ? JSON.parse(raw)\n  : raw;\n\nreturn programs.map(p => ({\n  json: {\n    platform: \"Federacy\",\n    name: p.name || p.code || \"Unknown\",\n    code: p.code || \"\",\n    url: p.url || \"\",\n    bounty: p.max_payout || 0\n  }\n}));"
+      },
+      "id": "9949553f-a267-4152-b7aa-cb1361a9617b",
+      "name": "Extract federacy Programs1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        1952
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "newItems",
+        "options": {}
+      },
+      "id": "83ca61e2-bf6b-4a1a-9999-3037007cb5cf",
+      "name": "Split New Programs2",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2576,
+        1792
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "YOUR_GOOGLE_SHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "key",
+              "displayName": "key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "platform",
+              "displayName": "platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "offersBounties",
+              "displayName": "offersBounties",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submissionState",
+              "displayName": "submissionState",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "firstSeen",
+              "displayName": "firstSeen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "70885eba-4c76-4f4e-bf0b-0f5e832a274d",
+      "name": "Append New Programs To Sheet2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3104,
+        1776
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "YOUR_DISCORD_GUILD_ID",
+          "mode": "id"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "YOUR_DISCORD_CHANNEL_URL",
+          "mode": "url"
+        },
+        "content": "={{ $json.message.slice(0, 1990) }}",
+        "options": {}
+      },
+      "id": "c65c9a96-022d-4118-9a31-fdb6abdb47b5",
+      "name": "Send to Discord3",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        3072,
+        1968
+      ],
+      "webhookId": "",
+      "credentials": {
+        "discordBotApi": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const data = item.json;\n\n  const platform = String(data.platform || '').trim();\n  const url = String(data.url || '').trim();\n\n  return {\n    json: {\n      key: `${platform}:${url}`,\n      platform,\n      name: data.name || '',\n      url,\n      code: data.code || '',\n      bounty: data.bounty || 0,\n      offersBounties: data.offersBounties || '',\n      submissionState: data.submissionState || '',\n      firstSeen: new Date().toISOString()\n    }\n  };\n});"
+      },
+      "id": "e5b51d91-9d51-4bf1-82f0-ec5c7d61e9fa",
+      "name": "Add Timestamp2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2848,
+        1792
+      ]
+    }
+  ],
+  "connections": {
+    "Extract Bugcrowd Programs1": {
+      "main": [
+        [
+          {
+            "node": "Merge A4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "hackerone_data2": {
+      "main": [
+        [
+          {
+            "node": "Extract hackerone Programs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bugcrowd_data2": {
+      "main": [
+        [
+          {
+            "node": "Extract Bugcrowd Programs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "intigriti_data2": {
+      "main": [
+        [
+          {
+            "node": "Extract intigrit Programs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "federacy_data2": {
+      "main": [
+        [
+          {
+            "node": "Extract federacy Programs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Bugcrowd Programs10": {
+      "main": [
+        [
+          {
+            "node": "Merge D3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "yeswehack_data2": {
+      "main": [
+        [
+          {
+            "node": "Extract Bugcrowd Programs10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Seen Programs From Sheet3": {
+      "main": [
+        [
+          {
+            "node": "Extract Seen Keys4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Seen Keys4": {
+      "main": [
+        [
+          {
+            "node": "Merge Combine4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge A4": {
+      "main": [
+        [
+          {
+            "node": "Merge B4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge B4": {
+      "main": [
+        [
+          {
+            "node": "Merge C4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge C4": {
+      "main": [
+        [
+          {
+            "node": "Merge D3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge D3": {
+      "main": [
+        [
+          {
+            "node": "Merge Combine4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Combine4": {
+      "main": [
+        [
+          {
+            "node": "Filter & Prepare4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter & Prepare4": {
+      "main": [
+        [
+          {
+            "node": "Split New Programs2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract hackerone Programs1": {
+      "main": [
+        [
+          {
+            "node": "Merge A4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extract intigrit Programs1": {
+      "main": [
+        [
+          {
+            "node": "Merge B4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extract federacy Programs1": {
+      "main": [
+        [
+          {
+            "node": "Merge C4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Split New Programs2": {
+      "main": [
+        [
+          {
+            "node": "Add Timestamp2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Timestamp2": {
+      "main": [
+        [
+          {
+            "node": "Append New Programs To Sheet2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send to Discord3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  }
+}
